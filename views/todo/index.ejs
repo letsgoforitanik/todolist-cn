@@ -1,0 +1,73 @@
+<html>
+    <head>
+        <title><%= pageTitle %></title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css" />
+        <link rel="stylesheet" href="/css/index.css" />
+
+        <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+        <script src="/scripts/main.js" type="module"></script>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="heading">TODO App</h1>
+            <form action="/add-todo" method="post" id="formAddTodo">
+                <div class="row">
+                    <div class="row-item">
+                        <label for="description">Description</label>
+                        <input type="text" id="description" name="description" placeholder="What do you need to do?" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="row-item">
+                        <label for="category">Category</label>
+                        <select name="category" id="category">
+                            <option value="" selected disabled>Choose a category</option>
+                            <% categories.forEach(category => { %>
+                            <option value="<%= category.key %>"><%= category.value %></option>
+                            <% } ) %>
+                        </select>
+                    </div>
+                    <div class="row-item">
+                        <label for="due-date">Due Date</label>
+                        <input type="text" id="due-date" placeholder="Pick a date" />
+                        <input type="hidden" name="dueDate" id="altDueDate" />
+                    </div>
+                </div>
+            </form>
+
+            <div id="error-message"></div>
+
+            <div class="buttons-row">
+                <button class="btn btn-black" type="button" id="btnAddTodo">
+                    <img src="/images/add.png" alt="plus-icon" />
+                    <span>Add Task</span>
+                </button>
+                <button class="btn btn-red" type="button" id="btnRemoveTodo">
+                    <img src="/images/delete.png" alt="trash-icon" />
+                    <span>Delete Task</span>
+                </button>
+            </div>
+
+            <form action="/remove-todos" method="post" id="formRemoveTodo">
+                <ul class="todos">
+                    <% todos.forEach(todo => { %>
+                    <li>
+                        <input type="hidden" value="<%= todo.id %>" />
+                        <input type="checkbox" />
+                        <div class="details">
+                            <h3><%= todo.description %></h3>
+                            <div class="timeline">
+                                <img src="/images/calendar.png" alt="calender-icon" />
+                                <span><%= todo.dueDate %></span>
+                            </div>
+                        </div>
+                        <div class="badge badge-<%= todo.category.toLowerCase() %>"><%= todo.category %></div>
+                    </li>
+                    <% } ) %>
+                </ul>
+                <input type="hidden" name="todoIds" id="txtTodoIds" />
+            </form>
+        </div>
+    </body>
+</html>
